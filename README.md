@@ -1,0 +1,2 @@
+# Promise
+Promises/A+ standard.
