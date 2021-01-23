@@ -1,7 +1,9 @@
 let delayHandler;
 
+declare function requestIdleCallback(callback: Function): void;
+
 // 模拟微任务，使用 requestIdleCallback / setTimeOut
-export function delayCallback(callback) {
+export function delayCallback(callback: Function) {
   if (!delayHandler) {
     if (typeof requestIdleCallback === 'function') {
       delayHandler = requestIdleCallback;

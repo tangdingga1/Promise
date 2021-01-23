@@ -2,6 +2,7 @@ import {
   I_Promise,
   IExecute,
   Thenable,
+  IDeferred,
 } from './interface';
 import { warpFunctionByAny, delayCallback } from './utils';
 import Resolve from './Resolve';
@@ -18,7 +19,7 @@ export default class _Promise<R> implements I_Promise<R> {
     this.value = undefined;
     this.reason = undefined;
     this._init(execute);
-  }
+  };
 
   private _init = (execute: IExecute) => {
     try {
@@ -105,27 +106,27 @@ export default class _Promise<R> implements I_Promise<R> {
  
   catch(onRejected) {
     return this.then(null, onRejected);
-  }
-}
+  };
 
-_Promise.resolve = function (x) {
-  return new _Promise((resolve) => resolve(x));
-}
+  static resolve<T>(x: T): _Promise<T> {
+    return new _Promise((resolve) => resolve(x));
+  };
 
-// interface for test
-_Promise.deferred = function() {
-  let resolve: (value?: any | Thenable<any>) => void;
-  let reject: (error?: any) => void;
-  let promise = new _Promise((r, j) => {
-    resolve = r;
-    reject = j;
-  });
-  return {
-    promise: promise as any,
-    resolve,
-    reject,
+  static deferred(): IDeferred {
+    let resolve: (value?: any | Thenable<any>) => void;
+    let reject: (error?: any) => void;
+    let promise = new _Promise((r, j) => {
+      resolve = r;
+      reject = j;
+    });
+    return {
+      promise: promise as any,
+      resolve,
+      reject,
+    };
   };
 }
+
 
 // com module export for test
 module.exports = _Promise;
